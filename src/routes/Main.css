@@ -7,6 +7,7 @@ html {
 }
 
 
+
 #inputBox {
     width: 80vw;
     height: 50vh;
@@ -24,7 +25,7 @@ html {
 
 .inputDate {
     margin-top: 5%;
-    margin-left: 50%;
+    margin-left: 5%;
     width: 7rem;
     height: 2rem;
     font-size: 13px;
@@ -32,12 +33,19 @@ html {
     border-radius: 10px;
 }
 
-.title {
-    font-size: 13px;
+.dateTitle {
+    margin-left: 5%;
+    margin-top: 3%;
+    font-size: 15px;
+}
+.dataTitle {
+    margin-left: 5%;
+    margin-top: 6%;
+    font-size: 15px;
 }
 .inputData {
     margin-top: 5%;
-    margin-left: 5%;
+    margin-left: 2%;
     width: 7rem;
     height: 2rem;
     font-size: 13px;

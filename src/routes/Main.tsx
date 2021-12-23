@@ -24,12 +24,12 @@ function Main({ onSubmit }: DataFormProps) {
         { value: "", name: "설정 안 함"}
     ]
     const ages:({ value: any; name: string; })[] = [
-        { value: ["10", "19"], name: "10"},
-        { value: ["20", "29"], name: "20"},
-        { value: ["30", "39"], name: "30"},
-        { value: ["40", "49"], name: "40"},
-        { value: ["50", "59"], name: "50"},
-        { value: ["60", "69"], name: "60"},    //60세 이상
+        { value: "10", name: "10대"},
+        { value: "20", name: "20대"},
+        { value: "30", name: "30대"},
+        { value: "40", name: "40대"},
+        { value: "50", name: "50대"},
+        { value: "60", name: "60대 이상"},
         { value: "", name: "설정 안 함"}
     ]
     const timeUnit = [
@@ -46,6 +46,12 @@ function Main({ onSubmit }: DataFormProps) {
 
     const { category, keyword } = form;
 
+    const [startDate, setStartDate] = useState<any>(new Date());
+    const [endDate, setEndDate] = useState<any>(new Date());
+
+    function onClick() {
+        console.log(category, keyword, startDate, endDate )
+    }
     const onChange = (e: any) => {
         const { name, value } = e.target;
         setForm({
@@ -64,23 +70,24 @@ function Main({ onSubmit }: DataFormProps) {
         });
     };
 
-    const [startDate, setStartDate] = useState<any>(new Date());
-    const [endDate, setEndDate] = useState<any>(new Date());
     return (
         <div id = "inputBox">
                 <div id ="dateForm">
+                    <div className="dateTitle">start: </div>
                     <DatePicker
                         className="inputDate"
                         selected={startDate}
                         onChange={date => setStartDate(date)}/>
+                    <div className="dateTitle">end: </div>
                     <DatePicker
                         className="inputDate"
                         selected={endDate}
                         onChange={date => setEndDate(date)}/>
                 </div>
                 <form id = "dataForm" onSubmit={handleSubmit}>
-
+                    <div className="dataTitle">category:</div>
                     <input className="inputData" placeholder="   category" name="category" value={category} onChange={onChange} />
+                    <div className="dataTitle">keyword:</div>
                     <input className="inputData" placeholder="   keyword" name="keyword" value={keyword} onChange={onChange} />
                 </form>
             <div id="selectForm">
@@ -93,7 +100,7 @@ function Main({ onSubmit }: DataFormProps) {
                         </option>
                     ))}
                 </select>
-                <select className = "select" >
+                <select className = "select">
                     {gender.map((gender) => (
                         <option
                             key={gender.value}
@@ -122,7 +129,7 @@ function Main({ onSubmit }: DataFormProps) {
                 </select>
             </div>
             <Link to = {{ pathname: "/search"}}>
-                <button id="btnSubmit" type="submit">조회</button>
+                <button onClick={onClick} id="btnSubmit" type="submit">조회</button>
             </Link>
         </div>
     )
