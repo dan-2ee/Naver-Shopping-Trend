@@ -1,0 +1,67 @@
+
+html {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+#inputBox {
+    width: 80vw;
+    height: 50vh;
+    border-radius: 15px;
+    margin-top: 7%;
+    background-color: #F0F0FA;
+}
+
+#dateForm {
+    display: flex;
+}
+#dataForm {
+    display: flex;
+}
+
+.inputDate {
+    margin-top: 5%;
+    margin-left: 50%;
+    width: 7rem;
+    height: 2rem;
+    font-size: 13px;
+    border: none;
+    border-radius: 10px;
+}
+
+.title {
+    font-size: 13px;
+}
+.inputData {
+    margin-top: 5%;
+    margin-left: 5%;
+    width: 7rem;
+    height: 2rem;
+    font-size: 13px;
+    border: none;
+    border-radius: 10px;
+}
+
+.select {
+    margin-top: 5%;
+    margin-left: 5%;
+    width: 7rem;
+    height: 2rem;
+    border: none;
+    border-radius: 10px;
+}
+#btnSubmit {
+    margin-top: 8%;
+    margin-left: 5%;
+    width: 5rem;
+    height: 2rem;
+    background-color: #7105FF;
+    font-size: 13px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}

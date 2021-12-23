@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
+import Main from "./routes/Main";
+import Search from "./components/Search";
+
+
 
 function App() {
+  const onSubmit = (form: {
+    category: string,
+    keyword: string,
+    }) => {
+    console.log(form);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main onSubmit={onSubmit}/>} />
+          <Route path="/search" element={<Search/>}/>
+        </Routes>
+      </BrowserRouter>
+      /*<Main onSubmit={onSubmit}/>
+      *  <Route path="/search" element={<Search/>} />*/
+  )
+
 }
+
 
 export default App;
