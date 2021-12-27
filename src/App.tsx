@@ -4,8 +4,6 @@ import './App.css';
 import Main from "./routes/Main";
 import Search from "./components/Search";
 
-
-
 function App() {
   const onSubmit = (form: {
     category: string,

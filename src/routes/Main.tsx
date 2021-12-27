@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { ko } from "date-fns/esm/locale";
 import { Link } from "react-router-dom";
 import "./Main.css"
 
@@ -45,7 +46,7 @@ function Main({ onSubmit }: DataFormProps) {
     });
 
 
-    const { category, keyword } = form;
+    const { category, keyword } :{ category: string; keyword: string; } = form;
 
     const [startDate, setStartDate] = useState<any>(new Date());   // todo: 선택한 날짜 입력 포맷에 맞게 가공해야함
     const [endDate, setEndDate] = useState<any>(new Date());
@@ -54,8 +55,13 @@ function Main({ onSubmit }: DataFormProps) {
     const [timeUnit, setTimeunit] = useState<any>("일간")
     const [gender, setGender] = useState<any>("")
 
-    const onClick = () => {     //value 저장되는지 확인
-        console.log(category, keyword, startDate, endDate, "\n", device, age, timeUnit, gender )
+    //YYYY-MM-dd 형식으로 변환
+    const newStartDate:string = `${startDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+startDate.getDate()).slice(-2)}`
+    const newEndDate:string = `${endDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+endDate.getDate()).slice(-2)}`
+
+    //value 저장되는지 확인, 임시
+    const onClick = () => {
+        console.log(newStartDate, newEndDate)
     }
 
     const onChange = (e: any) => {
@@ -70,7 +76,7 @@ function Main({ onSubmit }: DataFormProps) {
     const handleSubmit = (e: any) => {
         e.preventDefault();
         onSubmit(form);
-        setForm({     //초기화
+        setForm({
             category: '',
             keyword: ''
         });
@@ -92,11 +98,15 @@ function Main({ onSubmit }: DataFormProps) {
                     <DatePicker
                         className="inputDate"
                         selected={startDate}
+                        locale={ko}
+                        dateFormat={"yyyy-MM-dd"}
                         onChange={date => setStartDate(date)}/>
                     <div className="dateTitle">end: </div>
                     <DatePicker
                         className="inputDate"
                         selected={endDate}
+                        locale={ko}
+                        dateFormat="yyyy-MM-dd"
                         onChange={date => setEndDate(date)}/>
                 </div>
                 <form id = "dataForm" onSubmit={handleSubmit}>
