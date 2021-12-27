@@ -1,20 +1,24 @@
-import React, {useState} from "react";
+import React, {ReactNode, useState} from "react";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import "./Main.css"
-
-type DataFormProps = {
-    onSubmit: (form: {
-        category: string,
-        keyword: string,
-    }) => void;
-};
 
 type SelectType = {value: string, name: string};
 
-function Main({ onSubmit }: DataFormProps) {
+/*export type ChildProps = {
+    startDate: string,
+    endDate: string,
+    category: string,
+    keyword: string,
+    timeUnit: string,
+    device: string,
+    gender: string,
+    ages: string
+}*/
+
+function Main() {
     const devices: SelectType[] = [
         { value: "", name: "설정 안 함" },
         { value: "pc", name: "PC" },
@@ -27,7 +31,7 @@ function Main({ onSubmit }: DataFormProps) {
     ]
     const ages: SelectType[] = [
         { value: "", name: "설정 안 함"},
-        { value: "10", name: "10대"},    //todo: 다중선택 되도록
+        { value: "10", name: "10대"},
         { value: "20", name: "20대"},
         { value: "30", name: "30대"},
         { value: "40", name: "40대"},
@@ -45,13 +49,12 @@ function Main({ onSubmit }: DataFormProps) {
         keyword: "",
     });
 
-
     const { category, keyword } :{ category: string; keyword: string; } = form;
 
     const [startDate, setStartDate] = useState<any>(new Date());   // todo: 선택한 날짜 입력 포맷에 맞게 가공해야함
     const [endDate, setEndDate] = useState<any>(new Date());
     const [device, setDevice] = useState<any>("");    // 입력이 ""일경우 설정 안 함
-    const [age, setAges] = useState<any>("")
+    const [age, setAges] = useState<any>([])
     const [timeUnit, setTimeunit] = useState<any>("일간")
     const [gender, setGender] = useState<any>("")
 
@@ -61,7 +64,7 @@ function Main({ onSubmit }: DataFormProps) {
 
     //value 저장되는지 확인, 임시
     const onClick = () => {
-        console.log(newStartDate, newEndDate)
+        console.log(age)
     }
 
     const onChange = (e: any) => {
@@ -73,19 +76,10 @@ function Main({ onSubmit }: DataFormProps) {
         });
     };
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        onSubmit(form);
-        setForm({
-            category: '',
-            keyword: ''
-        });
-    };
-
     //select 된 값 저장
     const handleClick = (name: string) => (e:any) =>{
         if (name==="device") setDevice(e.target.value)
-        else if (name==="age") setAges([e.target.value])    //age input type = array
+        else if (name==="age") age.push(e.target.value)
         else if (name==="gender") setGender(e.target.value)
         else if (name==="timeUnit") setTimeunit(e.target.value)
     };
@@ -109,7 +103,7 @@ function Main({ onSubmit }: DataFormProps) {
                         dateFormat="yyyy-MM-dd"
                         onChange={date => setEndDate(date)}/>
                 </div>
-                <form id = "dataForm" onSubmit={handleSubmit}>
+                <form id = "dataForm">
                     <div className="dataTitle">category:</div>
                     <input className="inputData" placeholder="   category" name="category" value={category} onChange={onChange} />
                     <div className="dataTitle">keyword:</div>
@@ -157,11 +151,9 @@ function Main({ onSubmit }: DataFormProps) {
                     ))}
                 </select>
             </div>
-            <Link to = {{ pathname: "/search"}}>
-                <button onClick={onClick} id="btnSubmit" type="submit">조회</button>
+            <Link to = {{ pathname: "/search" }}>
+                <button id="btnSubmit" onClick={onClick} type="submit">조회</button>
             </Link>
-            </div>
-            <div id="basicBox">
             </div>
         </div>
     )

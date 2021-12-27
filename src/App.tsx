@@ -5,21 +5,15 @@ import Main from "./routes/Main";
 import Search from "./components/Search";
 
 function App() {
-  const onSubmit = (form: {
-    category: string,
-    keyword: string,
-    }) => {
-    console.log(form);
-  };
+
+
   return (
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Main onSubmit={onSubmit}/>} />
-          <Route path="/search" element={<Search/>}/>
-        </Routes>
+          <Routes>
+              <Route path="/" element={<Main/>}/>
+              <Route path="/search" element={<Search/>}/>
+          </Routes>
       </BrowserRouter>
-      /*<Main onSubmit={onSubmit}/>
-      *  <Route path="/search" element={<Search/>} />*/
   )
 
 }
