@@ -8,9 +8,9 @@
 
 #inputBox {
     width: 80vw;
-    height: 50vh;
+    height: 40vh;
     border-radius: 15px;
-    margin-top: 7%;
+    margin-top: 3%;
     margin-left: 10%;
     background-color: #F0F0FA;
 }
@@ -65,7 +65,7 @@
     border-radius: 10px;
 }
 #btnSubmit {
-    margin-top: 8%;
+    margin-top: 3%;
     margin-left: 5%;
     width: 5rem;
     height: 2rem;

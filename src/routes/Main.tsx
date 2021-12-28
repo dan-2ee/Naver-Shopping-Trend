@@ -2,21 +2,12 @@ import React, {ReactNode, useState} from "react";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import { Link} from "react-router-dom";
+import axios from 'axios';
 import "./Main.css"
+import Search from "../components/Search";
 
 type SelectType = {value: string, name: string};
 
-/*export type ChildProps = {
-    startDate: string,
-    endDate: string,
-    category: string,
-    keyword: string,
-    timeUnit: string,
-    device: string,
-    gender: string,
-    ages: string
-}*/
 
 function Main() {
     const devices: SelectType[] = [
@@ -54,19 +45,57 @@ function Main() {
     const [startDate, setStartDate] = useState<any>(new Date());   // todo: 선택한 날짜 입력 포맷에 맞게 가공해야함
     const [endDate, setEndDate] = useState<any>(new Date());
     const [device, setDevice] = useState<any>("");    // 입력이 ""일경우 설정 안 함
-    const [age, setAges] = useState<any>([])
-    const [timeUnit, setTimeunit] = useState<any>("일간")
+    const [age, setAge] = useState<any>([])
+
+    const [timeUnit, setTimeunit] = useState<any>("date")
     const [gender, setGender] = useState<any>("")
 
     //YYYY-MM-dd 형식으로 변환
     const newStartDate:string = `${startDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+startDate.getDate()).slice(-2)}`
-    const newEndDate:string = `${endDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+endDate.getDate()).slice(-2)}`
+    const newEndDate:string = `${endDate.getFullYear()}-${("0"+(endDate.getMonth()+1)).slice(-2)}-${("0"+endDate.getDate()).slice(-2)}`
 
-    //value 저장되는지 확인, 임시
-    const onClick = () => {
-        console.log(age)
+    //API 호출
+    const [searchData, setSearchData] = useState<any[]>([]);
+
+    const getShoppingData = async () => {
+        const data = {
+            "startDate": newStartDate,
+            "endDate": newEndDate,
+            "timeUnit": timeUnit,
+            "category": category,
+            "keyword": keyword,
+            "device": device,
+            "gender": gender,
+            "ages": age
+        };
+
+        const config : any = {
+            method: 'post',
+            // package.json 파일에 "proxy":"https://openapi.naver.com" 추가 ->  CORS ERROR 방지
+            url: '/v1/datalab/shopping/category/keyword/age',
+            headers: {
+                'X-Naver-Client-Id': 'hxWEKjmbZxVIP1xj0sB0',
+                'X-Naver-Client-Secret': 'SZbL1NRx9W',
+                'Content-Type': 'application/json'
+            },
+            data
+        };
+
+        axios(config)
+            .then(function (response) {
+                // setSearchData(JSON.stringify(response.data));
+                setSearchData(response.data?.results[0]['data']);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+
+    //조회 버튼 누르면 api 호출
+    const onClick = async() => {
+        await getShoppingData()
     }
-
     const onChange = (e: any) => {
         const { name, value } = e.target;
         setForm({
@@ -79,7 +108,8 @@ function Main() {
     //select 된 값 저장
     const handleClick = (name: string) => (e:any) =>{
         if (name==="device") setDevice(e.target.value)
-        else if (name==="age") age.push(e.target.value)
+        else if (name==="age") setAge([...age, e.target.value])
+        // age.push(e.target.value)
         else if (name==="gender") setGender(e.target.value)
         else if (name==="timeUnit") setTimeunit(e.target.value)
     };
@@ -151,10 +181,9 @@ function Main() {
                     ))}
                 </select>
             </div>
-            <Link to = {{ pathname: "/search" }}>
                 <button id="btnSubmit" onClick={onClick} type="submit">조회</button>
-            </Link>
             </div>
+            <Search searchData={searchData}/>
         </div>
     )
 }
