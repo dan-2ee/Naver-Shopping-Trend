@@ -41,7 +41,7 @@ function Main() {
 
     const { category, keyword } :{ category: string; keyword: string; } = form;
 
-    const [startDate, setStartDate] = useState<any>(new Date());   // todo: 선택한 날짜 입력 포맷에 맞게 가공해야함
+    const [startDate, setStartDate] = useState<any>(new Date());
     const [endDate, setEndDate] = useState<any>(new Date());
     const [device, setDevice] = useState<any>("");    // 입력이 ""일경우 설정 안 함
     const [age, setAge] = useState<any>([])
@@ -90,8 +90,6 @@ function Main() {
                 console.log(error);
             });
     };
-
-
 
     //조회 버튼 누르면 api 호출
     const onClick = async() => {

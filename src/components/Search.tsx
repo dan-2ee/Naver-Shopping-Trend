@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./Search.css"
 import {
     Line,
@@ -9,66 +9,65 @@ import {
     Tooltip,
     Legend,
 } from 'recharts';
-import {exists} from "fs";
+
 
 // main에서 전달받을 검색 결과
-type SearchProps ={
+type SearchProps = {
     searchData: any[]
 }
 
-function Search(searchData:SearchProps): any {
+const parseToChartData = (searchData: any) => {
+    let _periodSet = new Set();
+    searchData?.forEach((row: any) => _periodSet.add(row?.period));
+    const _periodArr = Array.from(_periodSet);    //_periodArr = period array
 
-    const [newData, setNewData] = useState<any>([])   // 그래프 그리기 위한 새로운 데이터
-    const data:any[] = []
-    useEffect(() => {
-        //date 값만 모아서 dateLst에 저장
-        let dateLst:any[] = []
-        for (let i =0; i<searchData['searchData'].length; i++) {
-            const date:any = searchData['searchData'][i]['period']
-            if (!(dateLst.includes(date))) {
-                dateLst = [...dateLst, date];
-            }
-        }
-        // const reDate = _temp.reverse()
-        //setNewDate(reDate);
-        for (let j=0; j<dateLst.length; j++) {
-            const date = dateLst[j]
-            const temp:any = {}   //같은 날짜에 해당하는 ratio, group 묶어서 저장
-            temp['period'] = date
-            for (let i =0; i<searchData['searchData'].length; i++) {
-                const data:any = searchData['searchData'][i]
-                const group = data['group']
-                const ratio = data['ratio']
-                if (date === data['period']) {
-                    temp[group] = ratio
-                }
-            }
-            if (!(newData.includes(temp))) newData.push(temp)
-        }
-    }, [])
-    // data: newData에서 value 값만 가져옴
+    //console.log(_periodArr)
+    //console.log(searchData)
+    return  _periodArr?.map((_period: any) => {
+        const filtered = searchData?.filter((row: any) => {
+            const { period } = row;
+            return period === _period      //searchData 중애서 period 같으면 반환
+        });
+        //console.log(filtered)
 
-    for (let x in Object.keys(newData)) data.push(newData[x])
-    /*useEffect(() => {
-        console.log(data);
-    },[data]);*/
+        const parsedObject = filtered?.reduce((acc: any, filteredRow: any) => {    //acc:result, filteredRow: value
+            const { ratio, group } = filteredRow;
+            //console.log(ratio, group)      // {"period:"2020-11-29", "10":100, "20""21
+            console.log(acc)
+            return {
+                ...acc,
+                [group]: ratio
+            }
+        }, {});      //{}: init value
+        //console.log(period)
+        //console.log(parsedObject)
+
+        //date, group:ratio 합침
+        return {
+            ...parsedObject,
+            _period
+        }
+    })
+
+}
+
+function Search(searchData: SearchProps): any {
+
     return (
-        <LineChart id="chart" width={730} height={250} data={data}
+        <LineChart id="chart" width={730} height={250} data={parseToChartData(searchData?.searchData)}
                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="period" />
             <YAxis />
             <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="10" stroke="#A4C3FF" />
-            <Line type="monotone" dataKey="20" stroke="#FFC6C3" />
-            <Line type="monotone" dataKey="30" stroke="#FFE146" />
-            <Line type="monotone" dataKey="40" stroke="#1E96FF" />
-            <Line type="monotone" dataKey="50" stroke="#3C3C8C" />
-            <Line type="monotone" dataKey="60" stroke="#82EB5A" />
+            <Legend/>
+            <Line type="monotone" dataKey="10" stroke="#8884d8" />
+            <Line type="monotone" dataKey="20" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="30" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="40" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="50" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="60" stroke="#82ca9d" />
         </LineChart>
     )
 }
 export default Search;
-
-
