@@ -52,21 +52,22 @@ const parseToChartData = (searchData: any) => {
 }
 
 function Search(searchData: SearchProps): any {
-
+    const data = parseToChartData(searchData?.searchData)
+    console.log(data)
     return (
-        <LineChart id="chart" width={730} height={250} data={parseToChartData(searchData?.searchData)}
+        <LineChart id="chart" width={850} height={350} data={data}
                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="period" />
+            <XAxis dataKey="_period" />
             <YAxis />
             <Tooltip />
             <Legend/>
-            <Line type="monotone" dataKey="10" stroke="#8884d8" />
-            <Line type="monotone" dataKey="20" stroke="#82ca9d" />
-            <Line type="monotone" dataKey="30" stroke="#82ca9d" />
-            <Line type="monotone" dataKey="40" stroke="#82ca9d" />
-            <Line type="monotone" dataKey="50" stroke="#82ca9d" />
-            <Line type="monotone" dataKey="60" stroke="#82ca9d" />
+            {"10" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="10" stroke="#8884d8" />:null}
+            {"20" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="20" stroke="#82ca9d" />:null}
+            {"30" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="30" stroke="#82EB5A" />:null}
+            {"40" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="40" stroke="#FFD2D7" />:null}
+            {"50" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="50" stroke="#FFF064" />:null}
+            {"60" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="60" stroke="#288CFF" />:null}
         </LineChart>
     )
 }
