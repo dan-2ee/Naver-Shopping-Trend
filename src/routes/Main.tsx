@@ -8,7 +8,6 @@ import Search from "../components/Search";
 
 type SelectType = {value: string, name: string};
 
-
 function Main() {
     const devices: SelectType[] = [
         { value: "", name: "설정 안 함" },
@@ -83,7 +82,7 @@ function Main() {
 
         axios(config)
             .then(function (response) {
-                // setSearchData(JSON.stringify(response.data));
+                // 'data' 부분만 전달
                 setSearchData(response.data?.results[0]['data']);
                 setCheck(true)
             })
