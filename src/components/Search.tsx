@@ -31,9 +31,8 @@ const parseToChartData = (searchData: any) => {
         //console.log(filtered)
 
         const parsedObject = filtered?.reduce((acc: any, filteredRow: any) => {    //acc:result, filteredRow: value
-            const { ratio, group } = filteredRow;
-            //console.log(ratio, group)      // {"period:"2020-11-29", "10":100, "20""21
-            console.log(acc)
+            const {ratio, group} = filteredRow;
+            //console.log(ratio, group)      // {"period:"2020-11-29", "10":100, "20":21.345}
             return {
                 ...acc,
                 [group]: ratio

@@ -76,11 +76,3 @@
     border: none;
     border-radius: 10px;
 }
-
-#basicBox {
-    width: 100vw;
-    height: 10vh;
-    background-color: #7105FF;
-    margin-top: 16%;
-    border-radius: 15px;
-}

@@ -53,7 +53,10 @@ function Main() {
     const newStartDate:string = `${startDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+startDate.getDate()).slice(-2)}`
     const newEndDate:string = `${endDate.getFullYear()}-${("0"+(endDate.getMonth()+1)).slice(-2)}-${("0"+endDate.getDate()).slice(-2)}`
 
-    const [isCheck, setCheck] = useState(false);
+    const [DataCheck, setDataCheck] = useState(false);
+    const [DateCheck, setDateCheck] = useState(false);
+    const [KeyCheck, setKeyCheck] = useState(false)
+    const [categoryCheck, setCategoryCheck] = useState(false)
     //API 호출
     const [searchData, setSearchData] = useState<any[]>([]);
     const getShoppingData = async () => {
@@ -84,7 +87,7 @@ function Main() {
             .then(function (response) {
                 // 'data' 부분만 전달
                 setSearchData(response.data?.results[0]['data']);
-                setCheck(true)
+                setDataCheck(true)
             })
             .catch(function (error) {
                 console.log(error);
@@ -93,7 +96,11 @@ function Main() {
 
     //조회 버튼 누르면 api 호출
     const onClick = async() => {
-        await getShoppingData()
+        /*if (keyword === "") setKeyCheck(true)
+        else if (category === "") setCategoryCheck(true)*/
+        if (newStartDate > newEndDate) setDateCheck(true)
+        else await getShoppingData()
+
     }
     const onChange = (e: any) => {
         const { name, value } = e.target;
@@ -170,7 +177,8 @@ function Main() {
                     ))}
                 </select>
                 <div className="dataTitle">timeUnit:</div>
-                <select className = "select" onChange={handleClick("timeUnit")}>
+                <select
+                    className = "select" onChange={handleClick("timeUnit")}>
                     {timeUnits.map((timeUnits) => (
                         <option
                             key={timeUnits.value}
@@ -181,7 +189,10 @@ function Main() {
                 </select>
             </div>
                 <button id="btnSubmit" onClick={onClick} type="submit">조회</button>
-                { isCheck ? <Search searchData={searchData}/> : null }
+                {DataCheck ? <Search searchData={searchData}/> : null }
+                {DateCheck ? <div className="showError">start Date check</div>:null  }
+                {/*{KeyCheck ? <div className={"showError"}>keyword check</div>:null  }
+                {categoryCheck? <div className={"showError"}>category check</div>:null  }*/}
             </div>
         </div>
     )
