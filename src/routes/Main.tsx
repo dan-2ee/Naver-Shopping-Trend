@@ -54,9 +54,9 @@ function Main() {
     const newStartDate:string = `${startDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+startDate.getDate()).slice(-2)}`
     const newEndDate:string = `${endDate.getFullYear()}-${("0"+(endDate.getMonth()+1)).slice(-2)}-${("0"+endDate.getDate()).slice(-2)}`
 
+    const [isCheck, setCheck] = useState(false);
     //API 호출
     const [searchData, setSearchData] = useState<any[]>([]);
-
     const getShoppingData = async () => {
         const data = {
             "startDate": newStartDate,
@@ -85,11 +85,13 @@ function Main() {
             .then(function (response) {
                 // setSearchData(JSON.stringify(response.data));
                 setSearchData(response.data?.results[0]['data']);
+                setCheck(true)
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
+
 
 
     //조회 버튼 누르면 api 호출
@@ -182,8 +184,8 @@ function Main() {
                 </select>
             </div>
                 <button id="btnSubmit" onClick={onClick} type="submit">조회</button>
+                { isCheck ? <Search searchData={searchData}/> : null }
             </div>
-            <Search searchData={searchData}/>
         </div>
     )
 }
