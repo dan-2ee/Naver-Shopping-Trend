@@ -4,8 +4,6 @@ import './App.css';
 import Main from "./routes/Main";
 
 function App() {
-
-
   return (
       <BrowserRouter>
           <Routes>
@@ -13,7 +11,6 @@ function App() {
           </Routes>
       </BrowserRouter>
   )
-
 }
 
 export default App;

@@ -43,11 +43,11 @@ function Main() {
 
     const [startDate, setStartDate] = useState<any>(new Date());
     const [endDate, setEndDate] = useState<any>(new Date());
-    const [device, setDevice] = useState<any>("");    // 입력이 ""일경우 설정 안 함
-    const [age, setAge] = useState<any>([])
+    const [device, setDevice] = useState<string>("");    // 입력이 ""일경우 설정 안 함
+    const [age, setAge] = useState<string[]>([])
 
-    const [timeUnit, setTimeunit] = useState<any>("date")
-    const [gender, setGender] = useState<any>("")
+    const [timeUnit, setTimeunit] = useState<string>("date")
+    const [gender, setGender] = useState<string>("")
 
     //YYYY-MM-dd 형식으로 변환
     const newStartDate:string = `${startDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+startDate.getDate()).slice(-2)}`
@@ -100,8 +100,9 @@ function Main() {
         else if (category === "") setCategoryCheck(true)*/
         if (newStartDate > newEndDate) setDateCheck(true)
         else await getShoppingData()
-
+        console.log(device)
     }
+
     const onChange = (e: any) => {
         const { name, value } = e.target;
         setForm({
@@ -149,9 +150,7 @@ function Main() {
                 <div className="dataTitle">device:</div>
                 <select className = "select" onChange={handleClick("device")}>
                     {devices.map((devices) => (
-                        <option
-                            key={devices.value}
-                            value={devices.value}>
+                        <option value={devices.value}>
                             {devices.name}
                         </option>
                     ))}
@@ -159,9 +158,7 @@ function Main() {
                 <div className="dataTitle" >gender:</div>
                 <select className = "select" onChange={handleClick("gender")}>
                     {genders.map((genders) => (
-                        <option
-                            key={genders.value}
-                            value={genders.value}>
+                        <option value={genders.value}>
                             {genders.name}
                         </option>
                     ))}
@@ -169,9 +166,7 @@ function Main() {
                 <div className="dataTitle">ages:</div>
                 <select className = "select" onChange={handleClick("age")}>
                     {ages.map((ages) => (
-                        <option
-                            key={ages.value}
-                            value={ages.value}>
+                        <option value={ages.value}>
                             {ages.name}
                         </option>
                     ))}
@@ -180,9 +175,7 @@ function Main() {
                 <select
                     className = "select" onChange={handleClick("timeUnit")}>
                     {timeUnits.map((timeUnits) => (
-                        <option
-                            key={timeUnits.value}
-                            value={timeUnits.value}>
+                        <option value={timeUnits.value}>
                             {timeUnits.name}
                         </option>
                     ))}

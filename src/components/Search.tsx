@@ -21,14 +21,11 @@ const parseToChartData = (searchData: any) => {
     searchData?.forEach((row: any) => _periodSet.add(row?.period));
     const _periodArr = Array.from(_periodSet);    //_periodArr = period array
 
-    //console.log(_periodArr)
-    //console.log(searchData)
     return  _periodArr?.map((_period: any) => {
         const filtered = searchData?.filter((row: any) => {
             const { period } = row;
             return period === _period      //searchData 중애서 period 같으면 반환
         });
-        //console.log(filtered)
 
         const parsedObject = filtered?.reduce((acc: any, filteredRow: any) => {    //acc:result, filteredRow: value
             const {ratio, group} = filteredRow;
@@ -38,8 +35,6 @@ const parseToChartData = (searchData: any) => {
                 [group]: ratio
             }
         }, {});      //{}: init value
-        //console.log(period)
-        //console.log(parsedObject)
 
         //date, group:ratio 합침
         return {
