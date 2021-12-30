@@ -5,6 +5,7 @@ import { ko } from "date-fns/esm/locale";
 import axios from 'axios';
 import "./Main.css"
 import Search from "../components/Search";
+import moment from "moment";
 
 type SelectType = {value: string, name: string};
 
@@ -43,20 +44,24 @@ function Main() {
 
     const [startDate, setStartDate] = useState<any>(new Date());
     const [endDate, setEndDate] = useState<any>(new Date());
-    const [device, setDevice] = useState<string>("");    // 입력이 ""일경우 설정 안 함
+    const [device, setDevice] = useState<string>("");
     const [age, setAge] = useState<string[]>([])
 
     const [timeUnit, setTimeunit] = useState<string>("date")
     const [gender, setGender] = useState<string>("")
 
-    //YYYY-MM-dd 형식으로 변환
-    const newStartDate:string = `${startDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+startDate.getDate()).slice(-2)}`
-    const newEndDate:string = `${endDate.getFullYear()}-${("0"+(endDate.getMonth()+1)).slice(-2)}-${("0"+endDate.getDate()).slice(-2)}`
+    //, error -> try, catch
+    // YYYY-MM-dd 형식으로 변환
+    const newStartDate:string = moment(startDate).format("YYYY-MM-DD")
+    const newEndDate:string = moment(endDate).format("YYYY-MM-DD")
+    // const newStartDate:string = `${startDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+startDate.getDate()).slice(-2)}`
+    // const newEndDate:string = `${endDate.getFullYear()}-${("0"+(endDate.getMonth()+1)).slice(-2)}-${("0"+endDate.getDate()).slice(-2)}`
 
     const [DataCheck, setDataCheck] = useState(false);
     const [DateCheck, setDateCheck] = useState(false);
     const [KeyCheck, setKeyCheck] = useState(false)
     const [categoryCheck, setCategoryCheck] = useState(false)
+
     //API 호출
     const [searchData, setSearchData] = useState<any[]>([]);
     const getShoppingData = async () => {
@@ -67,8 +72,8 @@ function Main() {
             "category": category,
             "keyword": keyword,
             "device": device,
-            "gender": gender,
-            "ages": age
+            "gender": gender,     //radio
+            "ages": age         //todo: 체크박스
         };
 
         const config : any = {
@@ -91,28 +96,27 @@ function Main() {
             })
             .catch(function (error) {
                 console.log(error);
+                setDataCheck(false)
             });
     };
 
-    //조회 버튼 누르면 api 호출
+    //조회 버튼 누르면 api 호출, switch
     const onClick = async() => {
         /*if (keyword === "") setKeyCheck(true)
         else if (category === "") setCategoryCheck(true)*/
         if (newStartDate > newEndDate) setDateCheck(true)
         else await getShoppingData()
-        console.log(device)
     }
 
     const onChange = (e: any) => {
         const { name, value } = e.target;
         setForm({
             ...form,
-            [name]: value,
             [name]: value
         });
     };
 
-    //select 된 값 저장
+    //select 된 값 저장, switch
     const handleClick = (name: string) => (e:any) =>{
         if (name==="device") setDevice(e.target.value)
         else if (name==="age") setAge([...age, e.target.value])
@@ -121,8 +125,13 @@ function Main() {
         else if (name==="timeUnit") setTimeunit(e.target.value)
     };
 
+
     return (
         <div id="main">
+            <div id={"nav"}>
+
+            </div>
+
             <div id = "inputBox">
                 <div id ="dateForm">
                     <div className="dateTitle">start: </div>
@@ -131,14 +140,14 @@ function Main() {
                         selected={startDate}
                         locale={ko}
                         dateFormat={"yyyy-MM-dd"}
-                        onChange={date => setStartDate(date)}/>
+                        onChange={setStartDate}/>
                     <div className="dateTitle">end: </div>
                     <DatePicker
                         className="inputDate"
                         selected={endDate}
                         locale={ko}
                         dateFormat="yyyy-MM-dd"
-                        onChange={date => setEndDate(date)}/>
+                        onChange={setEndDate}/>
                 </div>
                 <form id = "dataForm">
                     <div className="dataTitle">category:</div>
@@ -181,12 +190,16 @@ function Main() {
                     ))}
                 </select>
             </div>
-                <button id="btnSubmit" onClick={onClick} type="submit">조회</button>
+                <button id="btnSubmit" onClick={onClick} type="submit">Search</button>
                 {DataCheck ? <Search searchData={searchData}/> : null }
                 {DateCheck ? <div className="showError">start Date check</div>:null  }
                 {/*{KeyCheck ? <div className={"showError"}>keyword check</div>:null  }
                 {categoryCheck? <div className={"showError"}>category check</div>:null  }*/}
-            </div>
+                {/*age 선택칸 체크박스로 구현 */}
+                {/*{ages.map((ages) => (*/}
+                {/*    <input type={"checkbox"} name={ages.name}/>*/}
+                {/*))}*/}
+        </div>
         </div>
     )
 }

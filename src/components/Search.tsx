@@ -35,7 +35,6 @@ const parseToChartData = (searchData: any) => {
                 [group]: ratio
             }
         }, {});      //{}: init value
-
         //date, group:ratio 합침
         return {
             ...parsedObject,
@@ -44,6 +43,15 @@ const parseToChartData = (searchData: any) => {
     })
 
 }
+
+const group = [
+    {age: "10", color: "#8884d8"},
+    {age: "20", color: "#82ca9d"},
+    {age: "30", color: "#82EB5A"},
+    {age: "40", color: "#FFD2D7"},
+    {age: "50", color: "#FFF064"},
+    {age: "60", color: "#288CFF"}
+]
 
 function Search(searchData: SearchProps): any {
     const data = parseToChartData(searchData?.searchData)
@@ -56,6 +64,10 @@ function Search(searchData: SearchProps): any {
             <YAxis />
             <Tooltip />
             <Legend/>
+            {/*{group.map(user => (*/}
+            {/*    {"10" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="10" stroke="#8884d8" />:null}*/}
+            {/*))}*/}
+
             {"10" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="10" stroke="#8884d8" />:null}
             {"20" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="20" stroke="#82ca9d" />:null}
             {"30" in data[0]?<Line type="monotone" strokeWidth={3} dataKey="30" stroke="#82EB5A" />:null}
