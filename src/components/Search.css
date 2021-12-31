@@ -1,4 +1,14 @@
+
+#chartBox {
+    width: 80vw;
+    height: 40vh;
+    border-radius: 15px;
+    margin-top: 5%;
+    /*background-color: #F0F0FA;*/
+    background-color: white;
+}
+
 #chart {
-    margin-top: 8%;
-    margin-left: 17%;
+    margin-top: 5%;
+    margin-left: 35%;
 }

@@ -6,6 +6,9 @@ import axios from 'axios';
 import "./Main.css"
 import Search from "../components/Search";
 import moment from "moment";
+import 'antd/dist/antd.css';
+//import { DatePicker, Space } from 'antd';
+import { Input } from 'antd';
 
 type SelectType = {value: string, name: string};
 
@@ -54,8 +57,6 @@ function Main() {
     // YYYY-MM-dd 형식으로 변환
     const newStartDate:string = moment(startDate).format("YYYY-MM-DD")
     const newEndDate:string = moment(endDate).format("YYYY-MM-DD")
-    // const newStartDate:string = `${startDate.getFullYear()}-${("0"+(startDate.getMonth()+1)).slice(-2)}-${("0"+startDate.getDate()).slice(-2)}`
-    // const newEndDate:string = `${endDate.getFullYear()}-${("0"+(endDate.getMonth()+1)).slice(-2)}-${("0"+endDate.getDate()).slice(-2)}`
 
     const [DataCheck, setDataCheck] = useState(false);
     const [DateCheck, setDateCheck] = useState(false);
@@ -116,32 +117,34 @@ function Main() {
         });
     };
 
-    //select 된 값 저장, switch
+    //select 된 값 저장
     const handleClick = (name: string) => (e:any) =>{
-        if (name==="device") setDevice(e.target.value)
-        else if (name==="age") setAge([...age, e.target.value])
-        // age.push(e.target.value)
-        else if (name==="gender") setGender(e.target.value)
-        else if (name==="timeUnit") setTimeunit(e.target.value)
+        switch (name) {
+            case "device": setDevice(e.target.value); break;
+            case "age": setAge([...age, e.target.value]); break;
+            case "gender": setGender(e.target.value); break;
+            case "timeUnit": setTimeunit(e.target.value); break;
+        }
     };
 
-
+    //const { RangePicker } = DatePicker;
     return (
         <div id="main">
             <div id={"nav"}>
-
             </div>
-
             <div id = "inputBox">
                 <div id ="dateForm">
-                    <div className="dateTitle">start: </div>
+                    {/*<DatePicker className="inputDate" onChange={setStartDate} />*/}
+                    {/*<DatePicker className="inputDate" onChange={setEndDate} />*/}
+                    <div className="dateTitle">startDate: </div>
                     <DatePicker
                         className="inputDate"
                         selected={startDate}
                         locale={ko}
                         dateFormat={"yyyy-MM-dd"}
                         onChange={setStartDate}/>
-                    <div className="dateTitle">end: </div>
+
+                    <div className="dateTitle">endDate: </div>
                     <DatePicker
                         className="inputDate"
                         selected={endDate}
@@ -159,7 +162,7 @@ function Main() {
                 <div className="dataTitle">device:</div>
                 <select className = "select" onChange={handleClick("device")}>
                     {devices.map((devices) => (
-                        <option value={devices.value}>
+                        <option key={devices.value} value={devices.value}>
                             {devices.name}
                         </option>
                     ))}
@@ -167,7 +170,7 @@ function Main() {
                 <div className="dataTitle" >gender:</div>
                 <select className = "select" onChange={handleClick("gender")}>
                     {genders.map((genders) => (
-                        <option value={genders.value}>
+                        <option key={genders.value} value={genders.value}>
                             {genders.name}
                         </option>
                     ))}
@@ -175,7 +178,7 @@ function Main() {
                 <div className="dataTitle">ages:</div>
                 <select className = "select" onChange={handleClick("age")}>
                     {ages.map((ages) => (
-                        <option value={ages.value}>
+                        <option key={ages.value} value={ages.value}>
                             {ages.name}
                         </option>
                     ))}
@@ -184,7 +187,7 @@ function Main() {
                 <select
                     className = "select" onChange={handleClick("timeUnit")}>
                     {timeUnits.map((timeUnits) => (
-                        <option value={timeUnits.value}>
+                        <option key={timeUnits.value} value={timeUnits.value}>
                             {timeUnits.name}
                         </option>
                     ))}
