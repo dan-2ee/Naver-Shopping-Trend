@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import DatePicker from 'react-datepicker';
+//import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import axios from 'axios';
@@ -7,12 +7,17 @@ import "./Main.css"
 import Search from "../components/Search";
 import moment from "moment";
 import 'antd/dist/antd.css';
-//import { DatePicker, Space } from 'antd';
+import { DatePicker, Space } from 'antd';
+import { Layout, Menu, Breadcrumb } from 'antd';
 import { Input } from 'antd';
 
 type SelectType = {value: string, name: string};
 
 function Main() {
+    //antd
+    const { RangePicker } = DatePicker;
+    const { Header, Content, Footer } = Layout;
+
     const devices: SelectType[] = [
         { value: "", name: "설정 안 함" },
         { value: "pc", name: "PC" },
@@ -127,73 +132,66 @@ function Main() {
         }
     };
 
-    //const { RangePicker } = DatePicker;
     return (
-        <div id="main">
-            <div id={"nav"}>
-            </div>
-            <div id = "inputBox">
-                <div id ="dateForm">
-                    {/*<DatePicker className="inputDate" onChange={setStartDate} />*/}
-                    {/*<DatePicker className="inputDate" onChange={setEndDate} />*/}
-                    <div className="dateTitle">startDate: </div>
-                    <DatePicker
-                        className="inputDate"
-                        selected={startDate}
-                        locale={ko}
-                        dateFormat={"yyyy-MM-dd"}
-                        onChange={setStartDate}/>
-
-                    <div className="dateTitle">endDate: </div>
-                    <DatePicker
-                        className="inputDate"
-                        selected={endDate}
-                        locale={ko}
-                        dateFormat="yyyy-MM-dd"
-                        onChange={setEndDate}/>
+        <Layout className="layout">
+            <Header>
+                <div className="logo" />
+            </Header>
+            <Content style={{ padding: '30px 50px' }}>
+                <Breadcrumb style={{ margin: '16px 0' }}>
+                    <Breadcrumb.Item>Home</Breadcrumb.Item>
+                    <Breadcrumb.Item>List</Breadcrumb.Item>
+                    <Breadcrumb.Item>App</Breadcrumb.Item>
+                </Breadcrumb>
+                <div className="site-layout-content">
+                    <div id ="dateForm">
+                        <Space direction={"horizontal"}>
+                            <DatePicker placeholder={"startDate"} className="inputDate" onChange={setStartDate} />
+                            <DatePicker placeholder={"endDate"} className="inputDate" onChange={setEndDate} />
+                        </Space>
+                    </div>
+                    <form id = "dataForm">
+                        <div className="dataTitle">category:</div>
+                        <input className="inputData" placeholder="   category" name="category" value={category} onChange={onChange} />
+                        <div className="dataTitle">keyword:</div>
+                        <input className="inputData" placeholder="   keyword" name="keyword" value={keyword} onChange={onChange} />
+                    </form>
+                    <div id="selectForm">
+                        <div className="dataTitle">device:</div>
+                        <select className = "select" onChange={handleClick("device")}>
+                            {devices.map((devices) => (
+                                <option key={devices.value} value={devices.value}>
+                                    {devices.name}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="dataTitle" >gender:</div>
+                        <select className = "select" onChange={handleClick("gender")}>
+                            {genders.map((genders) => (
+                                <option key={genders.value} value={genders.value}>
+                                    {genders.name}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="dataTitle">ages:</div>
+                        <select className = "select" onChange={handleClick("age")}>
+                            {ages.map((ages) => (
+                                <option key={ages.value} value={ages.value}>
+                                    {ages.name}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="dataTitle">timeUnit:</div>
+                        <select className = "select" onChange={handleClick("timeUnit")}>
+                            {timeUnits.map((timeUnits) => (
+                                <option key={timeUnits.value} value={timeUnits.value}>
+                                    {timeUnits.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <button id="btnSubmit" onClick={onClick} type="submit">Search</button>
                 </div>
-                <form id = "dataForm">
-                    <div className="dataTitle">category:</div>
-                    <input className="inputData" placeholder="   category" name="category" value={category} onChange={onChange} />
-                    <div className="dataTitle">keyword:</div>
-                    <input className="inputData" placeholder="   keyword" name="keyword" value={keyword} onChange={onChange} />
-                </form>
-            <div id="selectForm">
-                <div className="dataTitle">device:</div>
-                <select className = "select" onChange={handleClick("device")}>
-                    {devices.map((devices) => (
-                        <option key={devices.value} value={devices.value}>
-                            {devices.name}
-                        </option>
-                    ))}
-                </select>
-                <div className="dataTitle" >gender:</div>
-                <select className = "select" onChange={handleClick("gender")}>
-                    {genders.map((genders) => (
-                        <option key={genders.value} value={genders.value}>
-                            {genders.name}
-                        </option>
-                    ))}
-                </select>
-                <div className="dataTitle">ages:</div>
-                <select className = "select" onChange={handleClick("age")}>
-                    {ages.map((ages) => (
-                        <option key={ages.value} value={ages.value}>
-                            {ages.name}
-                        </option>
-                    ))}
-                </select>
-                <div className="dataTitle">timeUnit:</div>
-                <select
-                    className = "select" onChange={handleClick("timeUnit")}>
-                    {timeUnits.map((timeUnits) => (
-                        <option key={timeUnits.value} value={timeUnits.value}>
-                            {timeUnits.name}
-                        </option>
-                    ))}
-                </select>
-            </div>
-                <button id="btnSubmit" onClick={onClick} type="submit">Search</button>
                 {DataCheck ? <Search searchData={searchData}/> : null }
                 {DateCheck ? <div className="showError">start Date check</div>:null  }
                 {/*{KeyCheck ? <div className={"showError"}>keyword check</div>:null  }
@@ -202,9 +200,10 @@ function Main() {
                 {/*{ages.map((ages) => (*/}
                 {/*    <input type={"checkbox"} name={ages.name}/>*/}
                 {/*))}*/}
-        </div>
-        </div>
-    )
+            </Content>
+            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+        </Layout>
+    );
 }
 
 export default Main;
