@@ -1,5 +1,8 @@
+.layout {
+    height: fit-content;
+}
 .site-layout-content {
-    min-height: 400px;
+    min-height: 470px;
     padding: 10px;
     background: #fff;
 }
@@ -24,9 +27,13 @@
     margin-top: 2%;
     display: flex;
 }
+
 #dataForm {
+    margin-left: 5%;
+    margin-top: 2%;
     display: flex;
 }
+
 
 .inputDate {
     margin-top: 5%;
@@ -37,20 +44,13 @@
     border-radius: 10px;
 }
 
-.dateTitle {
-    margin-left: 5%;
-    font-size: 18px;
-    font-weight: bold;
 
-}
 .dataTitle {
-    margin-left: 5%;
-    margin-top: 6%;
-    font-size: 18px;
+    font-size: 25px;
     font-weight: bold;
 }
 .inputData {
-    margin-top: 6%;
+    margin-top: 5%;
     margin-left: 2%;
     width: 7rem;
     height: 2rem;
@@ -59,28 +59,38 @@
     border-radius: 10px;
 }
 
-#selectForm {
+.selectForm {
+    margin-left: 5%;
+    margin-top: 2%;
     display: flex;
 }
 .select {
-    margin-top: 6%;
+    margin-top: 5%;
     margin-left: 3%;
+    margin-right: 10%;
     width: 7rem;
     height: 2rem;
     border: none;
     border-radius: 10px;
 }
+.selectBox {
+    margin-right: 80px;
+}
 #btnSubmit {
-    margin-top: 5%;
-    margin-left: 5%;
-    width: 5rem;
-    height: 2rem;
+    margin-top: 3%;
+    margin-left: 4%;
+    width: 7rem;
+    height: 2.5rem;
     background-color: #5f6061;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: bold;
     color: white;
     border: none;
     border-radius: 10px;
 }
 
-
+#alert {
+    margin-left: 4%;
+    margin-top: 2%;
+    width: 25rem;
+}

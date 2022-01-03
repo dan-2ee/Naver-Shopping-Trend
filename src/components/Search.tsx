@@ -47,38 +47,38 @@ const parseToChartData = (searchData: any) => {
 
 const group = [
     {age: "10", color: "#8884d8"},
-    {age: "20", color: "#82ca9d"},
-    {age: "30", color: "#82EB5A"},
+    {age: "20", color: "#FFF064"},
+    {age: "30", color: "#288CFF"},
     {age: "40", color: "#FFD2D7"},
-    {age: "50", color: "#FFF064"},
-    {age: "60", color: "#288CFF"}
+    {age: "50", color: "#82ca9d"},
+    {age: "60", color: "#82EB5A"}
 ]
 
 function Search(searchData: SearchProps): any {
-
-    const data = parseToChartData(searchData?.searchData)
-    return (
-        <div id={"search-content"}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-                <Breadcrumb.Item>Src</Breadcrumb.Item>
-                <Breadcrumb.Item>Components</Breadcrumb.Item>
-                <Breadcrumb.Item>Search</Breadcrumb.Item>
-            </Breadcrumb>
-            <div id="chart-content">
-                <LineChart width={903} height={430} data={data} id={"chart"}
-                           margin={{ top:15, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="_period" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                {group.map((user) =>
-                    user.age in data[0] ? <Line key={user.age} type="monotone" strokeWidth={3} dataKey={user.age} stroke={user.color}/>:null
-                )}
-                </LineChart>
+    const data= parseToChartData(searchData?.searchData)
+        return (
+            <div id={"search-content"}>
+                <Breadcrumb style={{margin: '16px 0'}}>
+                    <Breadcrumb.Item>Src</Breadcrumb.Item>
+                    <Breadcrumb.Item>Components</Breadcrumb.Item>
+                    <Breadcrumb.Item>Search</Breadcrumb.Item>
+                </Breadcrumb>
+                <div id="chart-content">
+                    <LineChart width={903} height={430} data={data} id={"chart"}
+                               margin={{top: 15, right: 30, left: 20, bottom: 5}}>
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <XAxis dataKey="_period"/>
+                        <YAxis/>
+                        <Tooltip/>
+                        <Legend/>
+                        {group.map((user) =>
+                            user.age in data[0] ?
+                                <Line key={user.age} type="monotone" strokeWidth={3} dataKey={user.age}
+                                      stroke={user.color}/> : null
+                        )}
+                    </LineChart>
+                </div>
             </div>
-        </div>
-
-    )
+        )
 }
 export default Search;

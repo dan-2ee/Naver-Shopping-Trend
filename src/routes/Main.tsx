@@ -1,14 +1,11 @@
 import React, {useState} from "react";
-//import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { ko } from "date-fns/esm/locale";
 import axios from 'axios';
 import "./Main.css"
 import Search from "../components/Search";
 import moment from "moment";
 import 'antd/dist/antd.css';
-import { DatePicker, Space } from 'antd';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { DatePicker, Space, Form, Alert, Checkbox, Layout, Breadcrumb } from 'antd';
 import { Input } from 'antd';
 
 type SelectType = {value: string, name: string};
@@ -16,7 +13,7 @@ type SelectType = {value: string, name: string};
 function Main() {
     //antd
     const { RangePicker } = DatePicker;
-    const { Header, Content, Footer } = Layout;
+    const { Header, Content} = Layout;
 
     const devices: SelectType[] = [
         { value: "", name: "설정 안 함" },
@@ -58,13 +55,12 @@ function Main() {
     const [timeUnit, setTimeunit] = useState<string>("date")
     const [gender, setGender] = useState<string>("")
 
-    //, error -> try, catch
-    // YYYY-MM-dd 형식으로 변환
     const newStartDate:string = moment(startDate).format("YYYY-MM-DD")
     const newEndDate:string = moment(endDate).format("YYYY-MM-DD")
 
     const [DataCheck, setDataCheck] = useState(false);
     const [DateCheck, setDateCheck] = useState(false);
+    const [DataNull, setDataNull] = useState(false);
     const [KeyCheck, setKeyCheck] = useState(false)
     const [categoryCheck, setCategoryCheck] = useState(false)
 
@@ -78,8 +74,8 @@ function Main() {
             "category": category,
             "keyword": keyword,
             "device": device,
-            "gender": gender,     //radio
-            "ages": age         //todo: 체크박스
+            "gender": gender,      // todo: radio 형식으로 변환
+            "ages": age
         };
 
         const config : any = {
@@ -106,12 +102,14 @@ function Main() {
             });
     };
 
-    //조회 버튼 누르면 api 호출, switch
+    //조회 버튼 누르면 api 호출
     const onClick = async() => {
-        /*if (keyword === "") setKeyCheck(true)
-        else if (category === "") setCategoryCheck(true)*/
-        if (newStartDate > newEndDate) setDateCheck(true)
-        else await getShoppingData()
+        console.log(age)
+        newStartDate > newEndDate? setDateCheck(true) : setDateCheck(false)
+        keyword === "" ? setKeyCheck(true) : setKeyCheck(false)
+        category == "" ? setCategoryCheck(true) : setCategoryCheck(false)
+        //모두 false 일 때 통과
+        if (!(DateCheck || KeyCheck || categoryCheck)) await getShoppingData()
     }
 
     const onChange = (e: any) => {
@@ -122,11 +120,20 @@ function Main() {
         });
     };
 
-    //select 된 값 저장
     const handleClick = (name: string) => (e:any) =>{
         switch (name) {
             case "device": setDevice(e.target.value); break;
-            case "age": setAge([...age, e.target.value]); break;
+            case "age": {
+                if (age.includes(e.target.value)) {
+                    // 체크 박스 선택 해제
+                    let index = age.indexOf(e.target.value);
+                    const newAges = age;
+                    newAges.splice(index, 1);
+                    setAge(newAges);
+                }
+                else setAge([...age, e.target.value]);
+                break;
+            }
             case "gender": setGender(e.target.value); break;
             case "timeUnit": setTimeunit(e.target.value); break;
         }
@@ -148,60 +155,71 @@ function Main() {
                         <Space direction={"horizontal"}>
                             <DatePicker placeholder={"startDate"} className="inputDate" onChange={setStartDate} />
                             <DatePicker placeholder={"endDate"} className="inputDate" onChange={setEndDate} />
+                            <RangePicker
+                                defaultValue={[moment('2017-08-01', "YYYY-MM-DD"), moment(new Date(), "YYYY-MM-DD")]}
+                                disabled size={"large"}
+                            />
                         </Space>
                     </div>
-                    <form id = "dataForm">
-                        <div className="dataTitle">category:</div>
-                        <input className="inputData" placeholder="   category" name="category" value={category} onChange={onChange} />
-                        <div className="dataTitle">keyword:</div>
-                        <input className="inputData" placeholder="   keyword" name="keyword" value={keyword} onChange={onChange} />
-                    </form>
-                    <div id="selectForm">
-                        <div className="dataTitle">device:</div>
-                        <select className = "select" onChange={handleClick("device")}>
-                            {devices.map((devices) => (
-                                <option key={devices.value} value={devices.value}>
-                                    {devices.name}
-                                </option>
-                            ))}
-                        </select>
-                        <div className="dataTitle" >gender:</div>
-                        <select className = "select" onChange={handleClick("gender")}>
-                            {genders.map((genders) => (
-                                <option key={genders.value} value={genders.value}>
-                                    {genders.name}
-                                </option>
-                            ))}
-                        </select>
-                        <div className="dataTitle">ages:</div>
-                        <select className = "select" onChange={handleClick("age")}>
-                            {ages.map((ages) => (
-                                <option key={ages.value} value={ages.value}>
-                                    {ages.name}
-                                </option>
-                            ))}
-                        </select>
-                        <div className="dataTitle">timeUnit:</div>
-                        <select className = "select" onChange={handleClick("timeUnit")}>
+                    <div id="dataForm">
+                        <Space direction="horizontal">
+                            <Form.Item  name="keyword" label="keyword" rules={[{ required: true }]} >
+                                <Input name="keyword" size={"large"} value={keyword} onChange={onChange}/>
+                            </Form.Item>
+                            <Form.Item name="category" label="category" rules={[{ required: true }]}>
+                                <Input name="category" size={"large"} value={category} onChange={onChange}/>
+                            </Form.Item>
+                        </Space>
+                    </div>
+                    <div className="selectForm">
+                        <Space direction="horizontal">
+                        <Form.Item label="device">
+                            <div className={"selectBox"}>
+                                <select className = "select" onChange={handleClick("device")}>
+                                    {devices.map((devices) => (
+                                        <option key={devices.value} value={devices.value}>
+                                            {devices.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </Form.Item>
+                        <Form.Item label="gender">
+                            <div className={"selectBox"}>
+                                <select className = "select" onChange={handleClick("gender")}>
+                                    {genders.map((genders) => (
+                                        <option key={genders.value} value={genders.value}>
+                                            {genders.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </Form.Item>
+                        <Form.Item name="timeUnit" label="timeUnit" rules={[{ required: true }]}>
+                        <select className = "select" onChange={handleClick("timeUnit")} >
                             {timeUnits.map((timeUnits) => (
                                 <option key={timeUnits.value} value={timeUnits.value}>
                                     {timeUnits.name}
                                 </option>
                             ))}
                         </select>
+                        </Form.Item>
+                        </Space>
+                    </div>
+                    <div className={"selectForm"}>
+                        <Form.Item name="ages" label="ages">
+                            {ages.map((age) => (
+                                <Checkbox onChange={handleClick("age")} value={age.value}>{age.name}</Checkbox>
+                            ))}
+                        </Form.Item>
                     </div>
                     <button id="btnSubmit" onClick={onClick} type="submit">Search</button>
+                    {DateCheck ? <div id={"alert"}> <Alert message="Error" description="start date must be less than the end date." type="error" showIcon/> </div> : null}
+                    {KeyCheck ? <div id={"alert"}> <Alert message="Error" description="enter the keyword." type="error" showIcon/> </div> : null}
+                    {categoryCheck ? <div id={"alert"}> <Alert message="Error" description="enter the category." type="error" showIcon/> </div> : null}
                 </div>
                 {DataCheck ? <Search searchData={searchData}/> : null }
-                {DateCheck ? <div className="showError">start Date check</div>:null  }
-                {/*{KeyCheck ? <div className={"showError"}>keyword check</div>:null  }
-                {categoryCheck? <div className={"showError"}>category check</div>:null  }*/}
-                {/*age 선택칸 체크박스로 구현 */}
-                {/*{ages.map((ages) => (*/}
-                {/*    <input type={"checkbox"} name={ages.name}/>*/}
-                {/*))}*/}
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>
     );
 }
