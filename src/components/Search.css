@@ -1,10 +1,13 @@
-#chart {
+#search-content {
     margin-top: 5%;
+}
+#chart {
+    margin-top: 4%;
+    margin-left: 45%;
 }
 
 #chart-content {
-    margin-top: 7%;
-    min-height: 430px;
+    min-height: 500px;
     padding: 10px;
     background: #fff;
 }
