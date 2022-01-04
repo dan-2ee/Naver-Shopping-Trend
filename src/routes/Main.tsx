@@ -1,12 +1,13 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import "./Main.css"
 import Search from "../components/Search";
-import moment from "moment";
+import dayjs from 'dayjs'
 import 'antd/dist/antd.css';
 import { DatePicker, Space, Form, Alert, Checkbox, Layout, Breadcrumb } from 'antd';
 import { Input } from 'antd';
+import moment from "moment";
 
 type SelectType = {value: string, name: string};
 
@@ -44,19 +45,16 @@ function Main() {
         category: "",
         keyword: "",
     });
-
     const { category, keyword } :{ category: string; keyword: string; } = form;
 
-    const [startDate, setStartDate] = useState<any>(new Date());
-    const [endDate, setEndDate] = useState<any>(new Date());
-    const [device, setDevice] = useState<string>("");
-    const [age, setAge] = useState<string[]>([])
+    const [startDate, setStartDate] = useState<any>("2021-12-31");
+    const [endDate, setEndDate] = useState<any>("2022-01-01");
 
+    const [device, setDevice] = useState<string>("");
     const [timeUnit, setTimeunit] = useState<string>("date")
     const [gender, setGender] = useState<string>("")
 
-    const newStartDate:string = moment(startDate).format("YYYY-MM-DD")
-    const newEndDate:string = moment(endDate).format("YYYY-MM-DD")
+    const [age, setAge] = useState<string[]>([])
 
     const [DataCheck, setDataCheck] = useState<boolean>(false);
     const [DateCheck, setDateCheck] = useState<boolean>(false);
@@ -70,8 +68,8 @@ function Main() {
     const [searchData, setSearchData] = useState<string[]>([]);
     const getShoppingData= async () => {
         const data = {
-            "startDate": newStartDate,
-            "endDate": newEndDate,
+            "startDate": dayjs(startDate).format("YYYY-MM-DD"),
+            "endDate": dayjs(endDate).format("YYYY-MM-DD"),
             "timeUnit": timeUnit,
             "category": category,
             "keyword": keyword,
@@ -105,10 +103,18 @@ function Main() {
     };
 
     //조회 버튼 누르면 api 호출
+    const keywordInput:any = useRef();
+    const categoryInput:any = useRef();
+
     const onClick = async() => {
-        newStartDate > newEndDate? setDateCheck(true) : setDateCheck(false)
+        // keyword, category 빈 칸 있으면 focus 이동
+        if (keyword === "") keywordInput.current.focus();
+        else if (category === "") categoryInput.current.focus();
+
+        // alert 창 띄우기 위한 체크
+        startDate > endDate? setDateCheck(true) : setDateCheck(false)
         keyword === "" ? setKeyCheck(true) : setKeyCheck(false)
-        category == "" ? setCategoryCheck(true) : setCategoryCheck(false)
+        category === "" ? setCategoryCheck(true) : setCategoryCheck(false)
         //모두 false 일 때 통과
         if (!(DateCheck || KeyCheck || categoryCheck)) await getShoppingData()
     }
@@ -127,13 +133,7 @@ function Main() {
             case "age": {
                 if (e.target.value==="" && ageNotCheck) setAgeNotCheck(false);
                 else if (e.target.value === "") {setAge([]); setAgeNotCheck(true) }
-                else if (age.includes(e.target.value)) {
-                    // 체크 박스 선택 해제
-                    let index = age.indexOf(e.target.value);
-                    const newAges = age;
-                    newAges.splice(index, 1);
-                    setAge(newAges);
-                }
+                else if (age.includes(e.target.value)) setAge(age.filter(age => age !== e.target.value));  // 체크 박스 선택 해제
                 else setAge([...age, e.target.value]);
                 break;
             }
@@ -156,10 +156,10 @@ function Main() {
                 <div className="site-layout-content">
                     <div id ="dateForm">
                         <Space direction={"horizontal"}>
-                            <DatePicker placeholder={"startDate"} className="inputDate" onChange={setStartDate} />
-                            <DatePicker placeholder={"endDate"} className="inputDate" onChange={setEndDate} />
+                            <DatePicker defaultValue={moment('2021-12-31', 'YYYY-MM-DD')} placeholder={"startDate"} className="inputDate" onChange={setStartDate}/>
+                            <DatePicker defaultValue={moment('2022-01-01', 'YYYY-MM-DD')} placeholder={"endDate"} className="inputDate" onChange={setEndDate} />
                             <RangePicker
-                                defaultValue={[moment('2017-08-01', "YYYY-MM-DD"), moment(new Date(), "YYYY-MM-DD")]}
+                                defaultValue={[moment('2017-08-01', 'YYYY-MM-DD'), moment(new Date(), "YYYY-MM-DD")]}
                                 disabled size={"large"}
                             />
                         </Space>
@@ -167,10 +167,10 @@ function Main() {
                     <div id="dataForm">
                         <Space direction="horizontal">
                             <Form.Item  name="keyword" label="keyword" rules={[{ required: true }]} >
-                                <Input name="keyword" size={"large"} value={keyword} onChange={onChange}/>
+                                <Input ref={keywordInput} name="keyword" size={"large"} value={keyword} onChange={onChange}/>
                             </Form.Item>
                             <Form.Item name="category" label="category" rules={[{ required: true }]}>
-                                <Input name="category" size={"large"} value={category} onChange={onChange}/>
+                                <Input ref={categoryInput} name="category" size={"large"} value={category} onChange={onChange}/>
                             </Form.Item>
                         </Space>
                     </div>

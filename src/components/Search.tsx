@@ -55,7 +55,7 @@ const group:{age:string, color:string}[] = [
 
 function Search(searchData: SearchProps): any {
     const data= parseToChartData(searchData?.searchData)
-    console.log(data)
+
         return (
             <div id={"search-content"}>
                 <Breadcrumb style={{margin: '16px 0'}}>
