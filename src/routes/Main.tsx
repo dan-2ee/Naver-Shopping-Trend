@@ -3,6 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import "./Main.css"
 import Search from "../components/Search";
+import SearchFail from "../components/SearchFail";
 import dayjs from 'dayjs'
 import 'antd/dist/antd.css';
 import { DatePicker, Space, Form, Alert, Checkbox, Layout, Breadcrumb } from 'antd';
@@ -222,7 +223,7 @@ function Main() {
                     {KeyCheck ? <div id={"alert"}> <Alert message="Error" description="enter the keyword." type="error" showIcon/> </div> : null}
                     {categoryCheck ? <div id={"alert"}> <Alert message="Error" description="enter the category." type="error" showIcon/> </div> : null}
                 </div>
-                {DataCheck ? <Search searchData={searchData}/> : null }
+                {DataCheck ? <Search searchData={searchData}/> : <SearchFail/> }
             </Content>
         </Layout>
     );

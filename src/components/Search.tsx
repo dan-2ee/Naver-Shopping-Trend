@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useRef, useState} from "react";
 import "./Search.css"
+import "./SearchFail"
 import {
     Line,
     LineChart,
@@ -54,7 +55,7 @@ const group:{age:string, color:string}[] = [
 ]
 
 function Search(searchData: SearchProps): any {
-    const data= parseToChartData(searchData?.searchData)
+    const data = parseToChartData(searchData?.searchData)
 
         return (
             <div id={"search-content"}>
