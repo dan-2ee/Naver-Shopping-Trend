@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Search.css"
 import {
     Line,
@@ -11,13 +11,12 @@ import {
 } from 'recharts';
 import {Breadcrumb} from "antd";
 
-
 // main에서 전달받을 검색 결과
 type SearchProps = {
-    searchData: any[]
+    searchData: string[]
 }
 
-const parseToChartData = (searchData: any) => {
+const parseToChartData = (searchData: string[]) => {
     let _periodSet = new Set();
     searchData?.forEach((row: any) => _periodSet.add(row?.period));
     const _periodArr = Array.from(_periodSet);    //_periodArr = period array
@@ -45,7 +44,7 @@ const parseToChartData = (searchData: any) => {
 
 }
 
-const group = [
+const group:{age:string, color:string}[] = [
     {age: "10", color: "#8884d8"},
     {age: "20", color: "#FFF064"},
     {age: "30", color: "#288CFF"},
@@ -56,6 +55,7 @@ const group = [
 
 function Search(searchData: SearchProps): any {
     const data= parseToChartData(searchData?.searchData)
+    console.log(data)
         return (
             <div id={"search-content"}>
                 <Breadcrumb style={{margin: '16px 0'}}>

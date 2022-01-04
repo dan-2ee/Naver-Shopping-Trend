@@ -40,7 +40,7 @@ function Main() {
         { value: "month", name: "월간"}
     ]
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<{category: string; keyword: string}>({
         category: "",
         keyword: "",
     });
@@ -58,15 +58,17 @@ function Main() {
     const newStartDate:string = moment(startDate).format("YYYY-MM-DD")
     const newEndDate:string = moment(endDate).format("YYYY-MM-DD")
 
-    const [DataCheck, setDataCheck] = useState(false);
-    const [DateCheck, setDateCheck] = useState(false);
-    const [DataNull, setDataNull] = useState(false);
-    const [KeyCheck, setKeyCheck] = useState(false)
-    const [categoryCheck, setCategoryCheck] = useState(false)
+    const [DataCheck, setDataCheck] = useState<boolean>(false);
+    const [DateCheck, setDateCheck] = useState<boolean>(false);
+    const [KeyCheck, setKeyCheck] = useState<boolean>(false);
+    const [ageNotCheck, setAgeNotCheck] = useState<boolean>(false)
+    const [categoryCheck, setCategoryCheck] = useState<boolean>(false);
+
+    const [DataNull, setDataNull] = useState<boolean>(false);
 
     //API 호출
-    const [searchData, setSearchData] = useState<any[]>([]);
-    const getShoppingData = async () => {
+    const [searchData, setSearchData] = useState<string[]>([]);
+    const getShoppingData= async () => {
         const data = {
             "startDate": newStartDate,
             "endDate": newEndDate,
@@ -74,7 +76,7 @@ function Main() {
             "category": category,
             "keyword": keyword,
             "device": device,
-            "gender": gender,      // todo: radio 형식으로 변환
+            "gender": gender,
             "ages": age
         };
 
@@ -104,7 +106,6 @@ function Main() {
 
     //조회 버튼 누르면 api 호출
     const onClick = async() => {
-        console.log(age)
         newStartDate > newEndDate? setDateCheck(true) : setDateCheck(false)
         keyword === "" ? setKeyCheck(true) : setKeyCheck(false)
         category == "" ? setCategoryCheck(true) : setCategoryCheck(false)
@@ -113,7 +114,7 @@ function Main() {
     }
 
     const onChange = (e: any) => {
-        const { name, value } = e.target;
+        const { name, value }:{ name: string; value: string; } = e.target;
         setForm({
             ...form,
             [name]: value
@@ -124,7 +125,9 @@ function Main() {
         switch (name) {
             case "device": setDevice(e.target.value); break;
             case "age": {
-                if (age.includes(e.target.value)) {
+                if (e.target.value==="" && ageNotCheck) setAgeNotCheck(false);
+                else if (e.target.value === "") {setAge([]); setAgeNotCheck(true) }
+                else if (age.includes(e.target.value)) {
                     // 체크 박스 선택 해제
                     let index = age.indexOf(e.target.value);
                     const newAges = age;
@@ -209,7 +212,8 @@ function Main() {
                     <div className={"selectForm"}>
                         <Form.Item name="ages" label="ages">
                             {ages.map((age) => (
-                                <Checkbox onChange={handleClick("age")} value={age.value}>{age.name}</Checkbox>
+                                age.value === ""? <Checkbox onChange={handleClick("age")} value={age.value}>{age.name}</Checkbox>:
+                                <Checkbox onChange={handleClick("age")} value={age.value} disabled={ageNotCheck}>{age.name}</Checkbox>
                             ))}
                         </Form.Item>
                     </div>

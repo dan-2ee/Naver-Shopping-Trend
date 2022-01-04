@@ -1,13 +1,14 @@
 #search-content {
     margin-top: 5%;
 }
-#chart {
-    margin-top: 4%;
-    margin-left: 45%;
-}
 
 #chart-content {
     min-height: 500px;
     padding: 10px;
     background: #fff;
+}
+
+#chart {
+    margin-top: 4%;
+    margin-left: 45%;
 }
