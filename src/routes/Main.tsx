@@ -6,7 +6,7 @@ import Search from "../components/Search";
 import SearchFail from "../components/SearchFail";
 import dayjs from 'dayjs'
 import 'antd/dist/antd.css';
-import { DatePicker, Space, Form, Alert, Checkbox, Layout, Breadcrumb } from 'antd';
+import { DatePicker, Space, Form, Alert, Checkbox, Layout, Breadcrumb, Descriptions } from 'antd';
 import { Input } from 'antd';
 import moment from "moment";
 
@@ -64,7 +64,7 @@ function Main() {
     const [categoryCheck, setCategoryCheck] = useState<boolean>(false);
 
     const [DataNull, setDataNull] = useState<boolean>(false);
-
+    //const inputList:any[] = [startDate, endDate, keyword, category, device, gender, timeUnit, age]
     //API 호출
     const [searchData, setSearchData] = useState<string[]>([]);
     const getShoppingData= async () => {

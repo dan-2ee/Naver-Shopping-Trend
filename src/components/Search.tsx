@@ -10,7 +10,7 @@ import {
     Tooltip,
     Legend,
 } from 'recharts';
-import {Breadcrumb} from "antd";
+import {Breadcrumb, Tag} from "antd";
 
 // main에서 전달받을 검색 결과
 type SearchProps = {
@@ -54,9 +54,8 @@ const group:{age:string, color:string}[] = [
     {age: "60", color: "#82EB5A"}
 ]
 
-function Search(searchData: SearchProps): any {
+function Search(searchData:SearchProps): any {
     const data = parseToChartData(searchData?.searchData)
-
         return (
             <div id={"search-content"}>
                 <Breadcrumb style={{margin: '16px 0'}}>
@@ -78,6 +77,12 @@ function Search(searchData: SearchProps): any {
                                       stroke={user.color}/> : null
                         )}
                     </LineChart>
+                    <div>
+                        <Tag color="#f50">#f50</Tag>
+                        <Tag color="#2db7f5">#2db7f5</Tag>
+                        <Tag color="#87d068">#87d068</Tag>
+                        <Tag color="#108ee9">#108ee9</Tag>
+                    </div>
                 </div>
             </div>
         )

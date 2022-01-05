@@ -1,6 +1,6 @@
 import React from "react";
 import "./SearchFail.css";
-import {Result, Button, Breadcrumb} from 'antd';
+import {Result, Breadcrumb} from 'antd';
 
 function SearchFail() {
     return (
@@ -13,7 +13,7 @@ function SearchFail() {
             <div id="image-content">
                 <Result
                     status="404"
-                    title="Data doesn't exist."
+                    title="No Data."
                 />
             </div>
         </div>
