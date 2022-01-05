@@ -6,9 +6,10 @@ import Search from "../components/Search";
 import SearchFail from "../components/SearchFail";
 import dayjs from 'dayjs'
 import 'antd/dist/antd.css';
-import { DatePicker, Space, Form, Alert, Checkbox, Layout, Breadcrumb, Descriptions } from 'antd';
+import { DatePicker, Space, Form, Alert, Checkbox, Layout, Breadcrumb} from 'antd';
 import { Input } from 'antd';
 import moment from "moment";
+import {createStore} from "redux";
 
 type SelectType = {value: string, name: string};
 
@@ -63,8 +64,6 @@ function Main() {
     const [ageNotCheck, setAgeNotCheck] = useState<boolean>(false)
     const [categoryCheck, setCategoryCheck] = useState<boolean>(false);
 
-    const [DataNull, setDataNull] = useState<boolean>(false);
-    //const inputList:any[] = [startDate, endDate, keyword, category, device, gender, timeUnit, age]
     //API 호출
     const [searchData, setSearchData] = useState<string[]>([]);
     const getShoppingData= async () => {
@@ -95,6 +94,7 @@ function Main() {
             .then(function (response) {
                 // 'data' 부분만 전달
                 setSearchData(response.data?.results[0]['data']);
+                store.dispatch(addToList(response.data?.results[0]['data']));
                 setDataCheck(true)
             })
             .catch(function (error) {
@@ -102,6 +102,36 @@ function Main() {
                 setDataCheck(false)
             });
     };
+    //redux store 이용
+    const initialState = {
+        list: [],
+    }
+
+    const ADD_TO_LIST = 'ADD_TO_LIST'
+
+    const addToList = (item: any) => ({
+        type: ADD_TO_LIST,
+        item
+    })
+
+    function reducer(state: {list: never[]} | undefined = initialState, action: { type: any; item: ConcatArray<never>; }) {
+        switch (action.type) {
+            case ADD_TO_LIST:
+                return {
+                    ...state,
+                    list: state.list.concat(action.item)
+                }
+            default:
+                return state
+        }
+    }
+    const store = createStore(reducer);
+    const listener = () => {
+        const state = store.getState();
+        console.log(state);
+    };
+
+    store.subscribe(listener);
 
     //조회 버튼 누르면 api 호출
     const keywordInput:any = useRef();
