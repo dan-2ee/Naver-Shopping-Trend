@@ -1,9 +1,7 @@
 import React from "react";
-import "./Search.css"
 import "./SearchFail"
 import {
     Line,
-    LineChart,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -12,6 +10,7 @@ import {
 } from 'recharts';
 import {Breadcrumb, Tag} from "antd";
 import {useSelector} from "react-redux";
+import * as S from "./SearchStyle"
 
 const parseToChartData = (searchData: string[]) => {
     let _periodSet = new Set();
@@ -57,14 +56,14 @@ function Search(): any {
     const data = parseToChartData(selector?.list)
     console.log(data)
         return (
-            <div id={"search-content"}>
+            <S.search_content>
                 <Breadcrumb style={{margin: '16px 0'}}>
                     <Breadcrumb.Item>Src</Breadcrumb.Item>
                     <Breadcrumb.Item>Components</Breadcrumb.Item>
                     <Breadcrumb.Item>Search</Breadcrumb.Item>
                 </Breadcrumb>
-                <div id="chart-content">
-                    <LineChart width={903} height={430} data={data} id={"chart"}
+                <S.chart_content>
+                    <S.chart width={903} height={430} data={data} id={"chart"}
                                margin={{top: 15, right: 30, left: 20, bottom: 5}}>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="_period"/>
@@ -76,15 +75,15 @@ function Search(): any {
                                 <Line key={user.age} type="monotone" strokeWidth={3} dataKey={user.age}
                                       stroke={user.color}/> : null
                         )}
-                    </LineChart>
+                    </S.chart>
                     <div>
                         <Tag color="#f50">#f50</Tag>
                         <Tag color="#2db7f5">#2db7f5</Tag>
                         <Tag color="#87d068">#87d068</Tag>
                         <Tag color="#108ee9">#108ee9</Tag>
                     </div>
-                </div>
-            </div>
+                </S.chart_content>
+            </S.search_content>
         )
 }
 export default Search;

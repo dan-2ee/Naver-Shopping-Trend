@@ -1,22 +1,22 @@
 import React from "react";
-import "./SearchFail.css";
 import {Result, Breadcrumb} from 'antd';
+import * as S from "./FailStyle"
 
 function SearchFail() {
     return (
-        <div id={"search-content"}>
+        <S.search_content>
             <Breadcrumb style={{margin: '16px 0'}}>
                 <Breadcrumb.Item>Src</Breadcrumb.Item>
                 <Breadcrumb.Item>Components</Breadcrumb.Item>
                 <Breadcrumb.Item>Search</Breadcrumb.Item>
             </Breadcrumb>
-            <div id="image-content">
+            <S.image_content>
                 <Result
                     status="404"
                     title="No Data."
                 />
-            </div>
-        </div>
+            </S.image_content>
+        </S.search_content>
     );
 }
 

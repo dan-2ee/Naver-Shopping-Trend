@@ -1,7 +1,7 @@
 import React, {useState, useRef} from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
-import "./Main.css"
+import * as S from "./MainStyle"
 import Search from "../components/Search";
 import SearchFail from "../components/SearchFail";
 import dayjs from 'dayjs'
@@ -147,7 +147,7 @@ function Main() {
     return (
         <Layout className="layout">
             <Header>
-                <div className="logo" />
+                <S.logo/>
             </Header>
             <Content style={{ padding: '30px 50px' }}>
                 <Breadcrumb style={{ margin: '16px 0' }}>
@@ -155,18 +155,18 @@ function Main() {
                     <Breadcrumb.Item>Routes</Breadcrumb.Item>
                     <Breadcrumb.Item>Main</Breadcrumb.Item>
                 </Breadcrumb>
-                <div className="site-layout-content">
-                    <div id ="dateForm">
+                <S.site_layout_content>
+                    <S.dateForm>
                         <Space direction={"horizontal"}>
-                            <DatePicker defaultValue={moment('2021-12-31', 'YYYY-MM-DD')} placeholder={"startDate"} className="inputDate" onChange={setStartDate}/>
-                            <DatePicker defaultValue={moment('2022-01-01', 'YYYY-MM-DD')} placeholder={"endDate"} className="inputDate" onChange={setEndDate} />
+                            <S.inputDate defaultValue={moment('2021-12-31', 'YYYY-MM-DD')} placeholder={"startDate"} className="inputDate" onChange={setStartDate}/>
+                            <S.inputDate defaultValue={moment('2022-01-01', 'YYYY-MM-DD')} placeholder={"endDate"} className="inputDate" onChange={setEndDate} />
                             <RangePicker
                                 defaultValue={[moment('2017-08-01', 'YYYY-MM-DD'), moment(new Date(), "YYYY-MM-DD")]}
                                 disabled size={"large"}
                             />
                         </Space>
-                    </div>
-                    <div id="dataForm">
+                    </S.dateForm>
+                    <S.dataForm>
                         <Space direction="horizontal">
                             <Form.Item  name="keyword" label="keyword" rules={[{ required: true }]} >
                                 <Input ref={keywordInput} name="keyword" size={"large"} value={keyword} onChange={onChange}/>
@@ -175,55 +175,55 @@ function Main() {
                                 <Input ref={categoryInput} name="category" size={"large"} value={category} onChange={onChange}/>
                             </Form.Item>
                         </Space>
-                    </div>
-                    <div className="selectForm">
+                    </S.dataForm>
+                    <S.selectForm>
                         <Space direction="horizontal">
                         <Form.Item label="device">
-                            <div className={"selectBox"}>
-                                <select className = "select" onChange={handleClick("device")}>
+                            <S.selectBox>
+                                <S.select onChange={handleClick("device")}>
                                     {devices.map((devices) => (
                                         <option key={devices.value} value={devices.value}>
                                             {devices.name}
                                         </option>
                                     ))}
-                                </select>
-                            </div>
+                                </S.select>
+                            </S.selectBox>
                         </Form.Item>
                         <Form.Item label="gender">
-                            <div className={"selectBox"}>
-                                <select className = "select" onChange={handleClick("gender")}>
+                            <S.selectBox>
+                                <S.select onChange={handleClick("gender")}>
                                     {genders.map((genders) => (
                                         <option key={genders.value} value={genders.value}>
                                             {genders.name}
                                         </option>
                                     ))}
-                                </select>
-                            </div>
+                                </S.select>
+                            </S.selectBox>
                         </Form.Item>
                         <Form.Item name="timeUnit" label="timeUnit" rules={[{ required: true }]}>
-                        <select className = "select" onChange={handleClick("timeUnit")} >
+                        <S.select onChange={handleClick("timeUnit")} >
                             {timeUnits.map((timeUnits) => (
                                 <option key={timeUnits.value} value={timeUnits.value}>
                                     {timeUnits.name}
                                 </option>
                             ))}
-                        </select>
+                        </S.select>
                         </Form.Item>
                         </Space>
-                    </div>
-                    <div className={"selectForm"}>
+                    </S.selectForm>
+                    <S.selectForm>
                         <Form.Item name="ages" label="ages">
                             {ages.map((age) => (
                                 age.value === ""? <Checkbox onChange={handleClick("age")} value={age.value}>{age.name}</Checkbox>:
                                 <Checkbox onChange={handleClick("age")} value={age.value} disabled={ageNotCheck}>{age.name}</Checkbox>
                             ))}
                         </Form.Item>
-                    </div>
-                    <button id="btnSubmit" onClick={onClick} type="submit">Search</button>
-                    {DateCheck ? <div id={"alert"}> <Alert message="Error" description="start date must be less than the end date." type="error" showIcon/> </div> : null}
-                    {KeyCheck ? <div id={"alert"}> <Alert message="Error" description="enter the keyword." type="error" showIcon/> </div> : null}
-                    {categoryCheck ? <div id={"alert"}> <Alert message="Error" description="enter the category." type="error" showIcon/> </div> : null}
-                </div>
+                    </S.selectForm>
+                    <S.btnSubmit onClick={onClick} type="submit">Search</S.btnSubmit>
+                    {DateCheck ? <S.alert> <Alert message="Error" description="start date must be less than the end date." type="error" showIcon/> </S.alert> : null}
+                    {KeyCheck ? <S.alert> <Alert message="Error" description="enter the keyword." type="error" showIcon/> </S.alert> : null}
+                    {categoryCheck ? <S.alert> <Alert message="Error" description="enter the category." type="error" showIcon/> </S.alert> : null}
+                </S.site_layout_content>
                 {DataCheck ? <Search/> : <SearchFail/> }
             </Content>
         </Layout>
