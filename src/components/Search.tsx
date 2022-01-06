@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React from "react";
 import "./Search.css"
 import "./SearchFail"
 import {
@@ -11,11 +11,7 @@ import {
     Legend,
 } from 'recharts';
 import {Breadcrumb, Tag} from "antd";
-
-// main에서 전달받을 검색 결과
-type SearchProps = {
-    searchData: string[]
-}
+import {useSelector} from "react-redux";
 
 const parseToChartData = (searchData: string[]) => {
     let _periodSet = new Set();
@@ -54,8 +50,12 @@ const group:{age:string, color:string}[] = [
     {age: "60", color: "#82EB5A"}
 ]
 
-function Search(searchData:SearchProps): any {
-    const data = parseToChartData(searchData?.searchData)
+function Search(): any {
+    const selector = useSelector<string[]>(state => state);
+
+    // @ts-ignore
+    const data = parseToChartData(selector?.list)
+    console.log(data)
         return (
             <div id={"search-content"}>
                 <Breadcrumb style={{margin: '16px 0'}}>

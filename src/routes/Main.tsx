@@ -10,7 +10,7 @@ import { DatePicker, Space, Form, Alert, Checkbox, Layout, Breadcrumb} from 'ant
 import { Input } from 'antd';
 import moment from "moment";
 import {addToList} from "../components/Action";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
 type SelectType = {value: string, name: string};
 
@@ -66,7 +66,6 @@ function Main() {
     const [categoryCheck, setCategoryCheck] = useState<boolean>(false);
 
     //API 호출
-    const [searchData, setSearchData] = useState<string[]>([]);
     const dispatch = useDispatch();
     const getShoppingData= async () => {
         const data = {
@@ -95,8 +94,6 @@ function Main() {
         axios(config)
             .then(function (response) {
                 // 'data' 부분만 전달
-                setSearchData(response.data?.results[0]['data']);
-                //store.dispatch(addToList(response.data?.results[0]['data']));
                 dispatch(addToList(response.data?.results[0]['data']));
                 setDataCheck(true)
             })
@@ -111,11 +108,9 @@ function Main() {
     //조회 버튼 누르면 api 호출
     const keywordInput:any = useRef();
     const categoryInput:any = useRef();
-    const Counter = useSelector(state => state);
+
     const onClick = async() => {
         // keyword, category 빈 칸 있으면 focus 이동
-
-        console.log(Counter)
         if (keyword === "") keywordInput.current.focus();
         else if (category === "") categoryInput.current.focus();
 
@@ -230,7 +225,7 @@ function Main() {
                     {KeyCheck ? <div id={"alert"}> <Alert message="Error" description="enter the keyword." type="error" showIcon/> </div> : null}
                     {categoryCheck ? <div id={"alert"}> <Alert message="Error" description="enter the category." type="error" showIcon/> </div> : null}
                 </div>
-                {DataCheck ? <Search searchData={searchData}/> : <SearchFail/> }
+                {DataCheck ? <Search/> : <SearchFail/> }
             </Content>
         </Layout>
     );
