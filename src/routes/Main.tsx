@@ -104,7 +104,6 @@ function Main() {
     };
     //redux store 이용
 
-
     //조회 버튼 누르면 api 호출
     const keywordInput:any = useRef();
     const categoryInput:any = useRef();

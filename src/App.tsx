@@ -6,8 +6,9 @@ import './App.css';
 import Main from "./routes/Main";
 import { Provider } from 'react-redux';
 import {createStore} from "redux";
-import reducers from "./components/reducers";
+// import reducers from "./components/reducers";
 
+import reducers from "./components/reducers";
 const store = createStore(reducers, composeWithDevTools()); // 스토어를 만듭니다.
 
 function App() {
