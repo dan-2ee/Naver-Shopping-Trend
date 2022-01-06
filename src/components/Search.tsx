@@ -53,9 +53,12 @@ function Search(): any {
     const selector = useSelector<string[]>(state => state);
 
     // @ts-ignore
-    const data = parseToChartData(selector?.list)
-    console.log(data)
-        return (
+    const data = selector.list[0];
+    const chartData = parseToChartData(data.results[0].data);
+
+
+    return (
+
             <S.search_content>
                 <Breadcrumb style={{margin: '16px 0'}}>
                     <Breadcrumb.Item>Src</Breadcrumb.Item>
@@ -63,7 +66,12 @@ function Search(): any {
                     <Breadcrumb.Item>Search</Breadcrumb.Item>
                 </Breadcrumb>
                 <S.chart_content>
-                    <S.chart width={903} height={430} data={data} id={"chart"}
+                    <S.tag>
+                        <Tag color="#f50">#{data.startDate} ~ {data.endDate}</Tag>
+                        <Tag color="#87d068">#{data.timeUnit}</Tag>
+                        <Tag color="#108ee9">#{data.results[0].title}</Tag>
+                    </S.tag>
+                    <S.chart width={903} height={430} data={chartData} id={"chart"}
                                margin={{top: 15, right: 30, left: 20, bottom: 5}}>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="_period"/>
@@ -71,17 +79,11 @@ function Search(): any {
                         <Tooltip/>
                         <Legend/>
                         {group.map((user) =>
-                            user.age in data[0] ?
+                            user.age in chartData[0] ?
                                 <Line key={user.age} type="monotone" strokeWidth={3} dataKey={user.age}
                                       stroke={user.color}/> : null
                         )}
                     </S.chart>
-                    <div>
-                        <Tag color="#f50">#f50</Tag>
-                        <Tag color="#2db7f5">#2db7f5</Tag>
-                        <Tag color="#87d068">#87d068</Tag>
-                        <Tag color="#108ee9">#108ee9</Tag>
-                    </div>
                 </S.chart_content>
             </S.search_content>
         )

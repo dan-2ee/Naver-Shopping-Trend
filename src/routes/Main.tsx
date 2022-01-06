@@ -94,7 +94,7 @@ function Main() {
         axios(config)
             .then(function (response) {
                 // 'data' 부분만 전달
-                dispatch(addToList(response.data?.results[0]['data']));
+                dispatch(addToList(response.data));
                 setDataCheck(true)
             })
             .catch(function (error) {
