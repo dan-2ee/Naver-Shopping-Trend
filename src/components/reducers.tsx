@@ -5,12 +5,13 @@ const initialState = {
     list: [],
 }
 
-function reducers(state: {list: never[]} | undefined = initialState, action: { type: any; item: ConcatArray<never>; }) {
+function reducers(state: {list: never[]} | undefined = initialState, action: { type: any; item: any; }) {
         switch (action.type) {
             case ADD_TO_LIST:
                 return {
-                    ...state,
-                    list: state.list.concat(action.item)
+                    // ...state,
+                    // list: state.list.concat(action.item)
+                    list: action.item
                 }
             default:
                 return state

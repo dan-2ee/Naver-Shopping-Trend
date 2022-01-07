@@ -9,8 +9,10 @@ import {
     Legend,
 } from 'recharts';
 import {Breadcrumb, Tag} from "antd";
-import {useSelector} from "react-redux";
+import {TypedUseSelectorHook, useSelector} from "react-redux";
 import * as S from "./SearchStyle"
+import {RootState} from "@reduxjs/toolkit/dist/query/core/apiState";
+import {chart} from "./SearchStyle";
 
 const parseToChartData = (searchData: string[]) => {
     let _periodSet = new Set();
@@ -50,15 +52,17 @@ const group:{age:string, color:string}[] = [
 ]
 
 function Search(): any {
+    //const useAppSelector:TypedUseSelectorHook<RootState<any, any, any>> = useSelector
     const selector = useSelector<string[]>(state => state);
-
+    // const selector = useAppSelector(state => state);
     // @ts-ignore
-    const data = selector.list[0];
+    const data = selector.list;
     const chartData = parseToChartData(data.results[0].data);
 
+    console.log(data)
+    console.log(chartData)
 
     return (
-
             <S.search_content>
                 <Breadcrumb style={{margin: '16px 0'}}>
                     <Breadcrumb.Item>Src</Breadcrumb.Item>
