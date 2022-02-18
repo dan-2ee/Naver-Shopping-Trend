@@ -1,5 +1,4 @@
 import React from "react";
-import "./SearchFail"
 import {
     Line,
     XAxis,
@@ -10,9 +9,8 @@ import {
 } from 'recharts';
 import {Breadcrumb, Tag} from "antd";
 import {TypedUseSelectorHook, useSelector} from "react-redux";
-import * as S from "./SearchStyle"
-import {RootState} from "@reduxjs/toolkit/dist/query/core/apiState";
-import {chart} from "./SearchStyle";
+import * as S from "./style"
+import {searchReducer} from "../store/SearchSlice";
 
 const parseToChartData = (searchData: string[]) => {
     let _periodSet = new Set();
@@ -51,13 +49,14 @@ const group:{age:string, color:string}[] = [
     {age: "60", color: "#82EB5A"}
 ]
 
+type SearchState = ReturnType<typeof searchReducer>;
+
 function Search(): any {
-    //const useAppSelector:TypedUseSelectorHook<RootState<any, any, any>> = useSelector
-    const selector = useSelector<string[]>(state => state);
-    // const selector = useAppSelector(state => state);
-    // @ts-ignore
+    const useAppSelector: TypedUseSelectorHook<any> = useSelector;
+    const selector = useAppSelector(state => state);
+
     const data = selector.list;
-    const chartData = parseToChartData(data.results[0].data);
+    const chartData = parseToChartData(data?.results[0]?.data);
 
     console.log(data)
     console.log(chartData)

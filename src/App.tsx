@@ -4,11 +4,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./routes/Main";
 import { Provider } from 'react-redux';
 import {createStore} from "redux";
-import {SearchSlice} from "./components/SearchSlice";
-import reducers from "./components/reducers";
-// const store = createStore(SearchSlice.reducer, composeWithDevTools());
+import {searchReducer} from "./components/store/SearchSlice";
 
-const store = createStore(reducers, composeWithDevTools());
+const store = createStore(searchReducer, composeWithDevTools());
+
 function App() {
     return (
       <Provider store={store}>

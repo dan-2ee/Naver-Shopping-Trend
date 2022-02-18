@@ -1,6 +1,6 @@
 import React from "react";
 import {Result, Breadcrumb} from 'antd';
-import * as S from "./FailStyle"
+import * as S from "./style"
 
 function SearchFail() {
     return (

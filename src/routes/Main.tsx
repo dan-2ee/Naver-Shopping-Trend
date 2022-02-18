@@ -1,21 +1,20 @@
 import React, {useState, useRef} from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
-import * as S from "./MainStyle"
-import Search from "../components/Search";
+import * as S from "./style"
+import Search from "../components/SearchCompleted";
 import SearchFail from "../components/SearchFail";
 import dayjs from 'dayjs'
 import 'antd/dist/antd.css';
 import { DatePicker, Space, Form, Alert, Checkbox, Layout, Breadcrumb} from 'antd';
 import { Input } from 'antd';
 import moment from "moment";
-import {addToList} from "../components/Action";
+import {searchAction} from "../components/store/SearchSlice";
 import {useDispatch} from "react-redux";
 
 type SelectType = {value: string, name: string};
 
 function Main() {
-    //antd
     const { RangePicker } = DatePicker;
     const { Header, Content} = Layout;
 
@@ -94,7 +93,8 @@ function Main() {
         axios(config)
             .then(function (response) {
                 // 'data' 부분만 전달
-                dispatch(addToList(response.data));
+                console.log(response)
+                dispatch(searchAction.addToList(response.data));
                 setDataCheck(true)
             })
             .catch(function (error) {
@@ -102,7 +102,6 @@ function Main() {
                 setDataCheck(false)
             });
     };
-    //redux store 이용
 
     //조회 버튼 누르면 api 호출
     const keywordInput:any = useRef();

@@ -9,7 +9,6 @@ export const chart_content = styled.div`
     min-height: 500px;
     padding: 10px;
     background: #fff;
-   
 `;
 
 
